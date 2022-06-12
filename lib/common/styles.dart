@@ -4,6 +4,9 @@ import 'package:google_fonts/google_fonts.dart';
 const Color kPrimaryColor = Color(0xFF01589b);
 const Color kPrimaryLightColor = Color(0xFF4f84cc);
 const Color kPrimaryDarkColor = Color(0xFF00306c);
+const Color kSecondaryColor = Color(0xFFffdb00);
+const Color kSecondaryLightColor = Color(0xFFffff53);
+const Color kSecondaryDarkColor = Color(0xFFc7aa00);
 
 final TextTheme myTextTheme = TextTheme(
   headline1: GoogleFonts.poppins(

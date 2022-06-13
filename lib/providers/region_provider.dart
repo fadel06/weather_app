@@ -6,6 +6,9 @@ import 'package:flutter/services.dart';
 import '../models/region.dart';
 
 class RegionProvider extends ChangeNotifier {
+  final TextEditingController _nameController = TextEditingController();
+  TextEditingController get nameController => _nameController;
+
   final TextEditingController _provinceController = TextEditingController();
   TextEditingController get provinceController => _provinceController;
 
@@ -20,9 +23,6 @@ class RegionProvider extends ChangeNotifier {
     }).toList();
   }
 
-  final TextEditingController _regencyController = TextEditingController();
-  TextEditingController get regencyController => _regencyController;
-
   String _provinceId = '';
   String get provinceId => _provinceId;
 
@@ -31,6 +31,9 @@ class RegionProvider extends ChangeNotifier {
     _provinceId = newId;
     notifyListeners();
   }
+
+  final TextEditingController _regencyController = TextEditingController();
+  TextEditingController get regencyController => _regencyController;
 
   bool _isRegencyInputEnabled = false;
   bool get isRegencyInputEnabled => _isRegencyInputEnabled;
@@ -50,4 +53,7 @@ class RegionProvider extends ChangeNotifier {
       return nameLower.contains(queryLower);
     }).toList();
   }
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  GlobalKey<FormState> get formKey => _formKey;
 }

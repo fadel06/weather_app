@@ -1,4 +1,8 @@
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:weather_app/common/constant.dart';
+import 'package:weather_app/providers/connection_provider.dart';
 
 import '../../common/styles.dart';
 import '../../models/region.dart';
@@ -59,26 +63,44 @@ class FormSection extends StatelessWidget {
             ],
           ),
         ),
-        Container(
-          width: MediaQuery.of(context).size.width,
-          padding: const EdgeInsets.symmetric(vertical: 32.0, horizontal: 16.0),
-          child: TextButton(
-            style: TextButton.styleFrom(
-                elevation: 8.0,
-                backgroundColor: kPrimaryColor,
-                shape: const StadiumBorder()),
-            onPressed: () {
-              if (provider.formKey.currentState!.validate()) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Mencari kondisi cuaca')));
-              }
-            },
-            child: Text(
-              "Cek Cuaca",
-              style: myTextTheme.headline6?.apply(color: Colors.white),
+        Consumer<ConnectionProvider>(builder: (context, connectionProvider, _) {
+          return Container(
+            width: MediaQuery.of(context).size.width,
+            padding:
+                const EdgeInsets.symmetric(vertical: 32.0, horizontal: 16.0),
+            child: TextButton(
+              style: TextButton.styleFrom(
+                  elevation: 8.0,
+                  backgroundColor: kPrimaryColor,
+                  shape: const StadiumBorder()),
+              onPressed: () async {
+                await connectionProvider.checkUserConnection();
+                if (connectionProvider.connectionStatus ==
+                    ConnectionStatus.connected) {
+                  if (provider.formKey.currentState!.validate()) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Mencari kondisi cuaca')));
+                  }
+                } else {
+                  Flushbar(
+                    title: 'Koneksi bermasalah',
+                    message: connectionProvider.message,
+                    duration: const Duration(seconds: 4),
+                    backgroundColor: Colors.red,
+                    titleColor: Colors.white,
+                    messageColor: Colors.white,
+                    showProgressIndicator: true,
+                    flushbarPosition: FlushbarPosition.TOP,
+                  )..show(context);
+                }
+              },
+              child: Text(
+                "Cek Cuaca",
+                style: myTextTheme.headline6?.apply(color: Colors.white),
+              ),
             ),
-          ),
-        )
+          );
+        })
       ],
     );
   }

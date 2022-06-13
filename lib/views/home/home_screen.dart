@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:weather_app/providers/connection_provider.dart';
 import 'package:weather_app/providers/region_provider.dart';
 
 import 'form_section.dart';
@@ -12,10 +13,14 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: ChangeNotifierProvider<RegionProvider>(
-          create: (_) => RegionProvider(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<ConnectionProvider>(
+            create: (_) => ConnectionProvider()),
+        ChangeNotifierProvider<RegionProvider>(create: (_) => RegionProvider())
+      ],
+      child: Scaffold(
+        body: SafeArea(
           child: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.only(bottom: 100.0),
